@@ -1,7 +1,7 @@
-package teste.cache.externalInfos;
+package teste.cache.externalinfos;
 
-public interface ExternalInfo {
+public interface ExternalInfo<T> {
 
-	public Object retrieveExternalInfo();
+	T retrieveExternalInfo(Object... params) throws Throwable;
 	
 }

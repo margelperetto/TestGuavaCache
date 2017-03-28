@@ -1,10 +1,10 @@
-package teste.cache.externalInfos;
+package teste.cache.externalinfos;
 
-public class InfoOSName implements ExternalInfo{
+public class InfoOSName implements ExternalInfo<String>{
 
 	@Override
-	public Object retrieveExternalInfo() {
-		return "win10";
+	public String retrieveExternalInfo(Object...params) {
+		return System.getProperty("os.name");
 	}
 
 }

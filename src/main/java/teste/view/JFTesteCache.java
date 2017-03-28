@@ -10,7 +10,8 @@ import javax.swing.JTextArea;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
-import teste.cache.manager.ExternalInfos;
+import teste.cache.externalinfos.ExternalInfoCacheManager;
+import teste.cache.externalinfos.ExternalInfos;
 
 @SuppressWarnings("serial")
 public class JFTesteCache extends JFrame{
@@ -23,7 +24,7 @@ public class JFTesteCache extends JFrame{
 		
 		setLayout(new MigLayout(new LC().wrapAfter(3)));
 		add(jlCount, new CC().wrap());
-		for(ExternalInfos c : ExternalInfos.values()){
+		for(ExternalInfoCacheManager<?> c : ExternalInfos.INFOS){
 			add(new JPCacheInfo(c), new CC().width("100%").height("100%"));
 		}
 
@@ -35,10 +36,10 @@ public class JFTesteCache extends JFrame{
 	}
 
 	private class JPCacheInfo extends JPanel{
-		private ExternalInfos info;
+		private ExternalInfoCacheManager<?> info;
 		private JTextArea jtaConsole = new JTextArea();
 
-		public JPCacheInfo(ExternalInfos info) {
+		public JPCacheInfo(ExternalInfoCacheManager<?> info) {
 			this.info = info;
 
 			jtaConsole.setLineWrap(true);
@@ -46,14 +47,14 @@ public class JFTesteCache extends JFrame{
 			jtaConsole.setEditable(false);
 
 			setLayout(new MigLayout());
-			add(new JLabel(info.name()));
-			add(new JLabel("Duração da cache(millis): "+info.getCacheManager().getCacheDurationMillis()), new CC().alignX("right").wrap());
+			add(new JLabel(info.getExternalInfoClass().getSimpleName()));
+			add(new JLabel("Duração da cache(millis): "+info.getCacheDurationMillis()), new CC().alignX("right").wrap());
 			add(new JScrollPane(jtaConsole), new CC().spanX().width("300:100%:").height("200:100%:"));
 		}
 
 		public void buscarInfo(){
 			try {
-				jtaConsole.setText(""+info.getCacheManager().getCachedInfo());
+				jtaConsole.setText(""+info.getCachedInfo());
 			} catch (Exception e) {
 				e.printStackTrace();
 				jtaConsole.setText("ERROR!");
