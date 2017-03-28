@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
 import com.google.common.cache.LoadingCache;
 
 public class ExternalInfoCacheManager<T> {
@@ -47,7 +48,9 @@ public class ExternalInfoCacheManager<T> {
 	public T getCachedInfo() throws RuntimeException{
 		try {
 			return  getLoadingCache().get(externalInfoClass);
-		} catch (ExecutionException e) {
+		} catch (InvalidCacheLoadException e) {
+			return null;
+		} catch (Exception e) {
 			throw new RuntimeException("Erro to get cached info!",e);
 		}
 	}
